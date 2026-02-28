@@ -113,7 +113,7 @@ const PostEventPage: React.FC<PostEventPageProps> = ({ onNav, onAdd }) => {
 
   const Block: React.FC<BlockProps> = ({ title, icon, children }) => (
     <div style={{ background:C.pinkCard, border:C.border, borderRadius:16, padding:"28px", marginBottom:16 }}>
-      <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:20 }}>
+      <div style={{  gap:10, marginBottom:20 }}>
         <i className={icon} style={{ color:C.navy, fontSize:18 }}/>
         <p style={{ fontFamily:"'Boogaloo',cursive", fontSize:22, color:C.pink, letterSpacing:0.5 }}>{title}</p>
       </div>

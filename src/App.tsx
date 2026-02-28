@@ -3,8 +3,8 @@ import { EVENTS, type Event, type Page } from "./tokens";
 import { GlobalStyles } from "./components";
 import HomePage         from "./Homepage";
 import PostEventPage    from "./Posteventpage";
-import ExplorePage      from "./Explorepage";
-import EventDetailsPage from "./Eventdetailspage";
+import ExplorePage      from "./ExplorePage";
+import EventDetailsPage from "./EventDetailsPage";
 
 // ═══════════════════════════════════════════════════
 //   APP ROOT
