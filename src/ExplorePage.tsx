@@ -1,20 +1,23 @@
 import { useState, useMemo } from "react";
 import { C, CATEGORIES, type Event, type Page } from "./tokens.ts";
-import { GlobalStyles, Nav, NavLink, PinkBtn } from "./components";
-import EventCard from "./Eventcard.tsx";
+import { GlobalStyles, Nav, NavLink, PinkBtn } from "./components.tsx";
+import EventCard from "./Eventcard";
 
 // ═══════════════════════════════════════════════════
 //   TYPES
 // ═══════════════════════════════════════════════════
-interface ExplorePageProps {
+
+ interface ExplorePageProps {
   onNav: (target: Page, id?: string) => void;
   events: Event[];
+  loading: boolean;   // add this
 }
+
 
 // ═══════════════════════════════════════════════════
 //   EXPLORE PAGE
 // ═══════════════════════════════════════════════════
-const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events }) => {
+const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events, loading }) => {
   const [search, setSearch] = useState("");
   const [cat, setCat]       = useState("All");
   const [sub, setSub]       = useState("All");
@@ -116,7 +119,12 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events }) => {
         </p>
 
         {/* Grid or empty state */}
-        {filtered.length > 0 ? (
+        {loading ? (
+          <div style={{ textAlign:"center", padding:"80px 24px" }}>
+            <i className="fa-solid fa-spinner" style={{ fontSize:40, color:C.pink, display:"block", marginBottom:16, animation:"pulse 1s infinite" }}/>
+            <p style={{ color:C.navy, fontWeight:700, opacity:0.5 }}>Loading events...</p>
+          </div>
+        ) : filtered.length > 0 ? (
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))", gap:20 }}>
             {filtered.map(ev => (
               <EventCard key={ev.id} ev={ev} onClick={() => onNav("details", ev.id)}/>
