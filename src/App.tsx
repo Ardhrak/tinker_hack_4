@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EVENTS, type Event, type Page } from "./tokens";
+import { type Event, type Page } from "./tokens";
 import { GlobalStyles } from "./components";
 import HomePage         from "./Homepage";
 import PostEventPage    from "./Posteventpage";
