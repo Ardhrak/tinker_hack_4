@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { EVENTS, type Event, type Page } from "./tokens";
+import { GlobalStyles } from "./components";
+import HomePage         from "./Homepage";
+import PostEventPage    from "./Posteventpage";
+import ExplorePage      from "./Explorepage";
+import EventDetailsPage from "./Eventdetailspage";
 
-function App() {
-  const [count, setCount] = useState(0)
+// ═══════════════════════════════════════════════════
+//   APP ROOT
+// ═══════════════════════════════════════════════════
+export default function App() {
+  const [page,   setPage]   = useState<Page>("home");
+  const [selId,  setSelId]  = useState<string | null>(null);
+  const [events, setEvents] = useState<Event[]>(EVENTS);
+
+  const onNav = (target: Page, id?: string) => {
+    setPage(target);
+    if (id) setSelId(id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const ev = selId ? events.find(e => e.id === selId) ?? null : null;
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <GlobalStyles />
+      <div style={{ fontFamily: "'Nunito',sans-serif" }}>
+        {page === "home"    && <HomePage    onNav={onNav}/>}
+        {page === "post"    && <PostEventPage onNav={onNav} onAdd={e => setEvents(p => [e, ...p])}/>}
+        {page === "explore" && <ExplorePage  onNav={onNav} events={events}/>}
+        {page === "details" && <EventDetailsPage onNav={onNav} event={ev}/>}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
-
-export default App
