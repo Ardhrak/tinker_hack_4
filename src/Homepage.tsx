@@ -87,7 +87,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNav }) => {
           is to help every student find their tribe — the events, clubs, and teammates that make college life extraordinary. We are building a space where you never have to miss out again.
         </div>
         <div style={{ fontSize:14, lineHeight:1.8, color:C.navy, fontWeight:600 }}>
-          Whether you're a fresher looking for your first hackathon or a club president trying to recruit the perfect team, CampusCrew is your trusted partner. Post events, explore opportunities, and connect instantly.
+          Whether you're a fresher trying to find someone to team up for your first hackathon or an art enthusiast waiting for thier partner , CampusCrew is your trusted partner. Post team up requests, explore opportunities, and connect instantly.
         </div>
         <div style={{ display:"flex", justifyContent:"center" }}>
           <button
@@ -158,7 +158,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNav }) => {
             Post Your First Event Free
           </h2>
           <p style={{ fontSize:14, lineHeight:1.8, fontWeight:600, color:C.navy, maxWidth:340 }}>
-            We'll help you reach every student on campus. Post your event, set your team roles, and start getting interest from day one — no experience needed.
+            We'll help you reach every student on campus. Post your request, set your event requirements, and GET SET WIN.
           </p>
           <div style={{ position:"absolute", bottom:30, right:30, color:C.navy, opacity:0.2 }}>
             <i className="fa-solid fa-arrow-right" style={{ fontSize:36, transform:"rotate(30deg)", display:"inline-block" }}/>

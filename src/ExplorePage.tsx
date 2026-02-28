@@ -35,7 +35,7 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events, loading }) => 
   );
 
   return (
-    <div style={{ minHeight:"100vh", background:C.white, fontFamily:"'Nunito',sans-serif" }}>
+    <div style={{ minHeight:"100vh",width: "100%", background:C.white, fontFamily:"'Nunito',sans-serif" }}>
       <GlobalStyles />
       <Nav
         onNav={onNav}
