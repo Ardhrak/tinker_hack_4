@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { C,type Page } from "./tokens.ts";
+import { C, type Page } from "./tokens.ts";
 import { GlobalStyles, Nav, NavLink, PinkBtn, DoodleAccent } from "./components.tsx";
 
 // ═══════════════════════════════════════════════════
@@ -10,12 +11,239 @@ interface HomePageProps {
 }
 
 // ═══════════════════════════════════════════════════
+//   MODAL OVERLAY
+// ═══════════════════════════════════════════════════
+const Modal: React.FC<{ onClose: () => void; children: React.ReactNode }> = ({ onClose, children }) => (
+  <div
+    onClick={onClose}
+    style={{
+      position: "fixed", inset: 0, background: "rgba(27,20,100,0.45)", zIndex: 1000,
+      display: "flex", alignItems: "center", justifyContent: "center", padding: 24,
+      backdropFilter: "blur(4px)",
+    }}
+  >
+    <div
+      onClick={e => e.stopPropagation()}
+      style={{
+        background: "#fff", border: `2.5px solid #1B1464`, borderRadius: 24,
+        maxWidth: 680, width: "100%", maxHeight: "85vh", overflowY: "auto",
+        padding: "44px 48px", position: "relative",
+        boxShadow: `6px 10px 0 #1B1464`,
+        fontFamily: "'Nunito', sans-serif",
+      }}
+    >
+      <button
+        onClick={onClose}
+        style={{
+          position: "absolute", top: 18, right: 20, background: "none", border: "none",
+          fontSize: 22, cursor: "pointer", color: "#1B1464", lineHeight: 1,
+        }}
+      >
+        ✕
+      </button>
+      {children}
+    </div>
+  </div>
+);
+
+// ═══════════════════════════════════════════════════
+//   ABOUT US CONTENT
+// ═══════════════════════════════════════════════════
+const AboutContent: React.FC = () => (
+  <div>
+    <h2 style={{ fontFamily: "'Boogaloo', cursive", fontSize: 44, color: "#FF69B4", letterSpacing: 1, marginBottom: 8 }}>
+      About Us
+    </h2>
+    <p style={{ fontSize: 14, fontWeight: 700, color: "#1B1464", lineHeight: 1.8, marginBottom: 20 }}>
+      <span style={{ color: "#FF69B4", fontWeight: 900, textTransform: "uppercase", letterSpacing: 1 }}>CampusCrew</span> was born out of a simple frustration — too many students missing out on events because there was no single place to find them.
+    </p>
+    <p style={{ fontSize: 14, fontWeight: 600, color: "#1B1464", lineHeight: 1.8, marginBottom: 20, opacity: 0.85 }}>
+      Founded 6 years ago by a group of college students who wanted to make campus life more connected, we've grown into a platform trusted by 700+ students across campuses. Our mission has never changed: help every student find their tribe.
+    </p>
+
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, margin: "28px 0" }}>
+      {[
+        { icon: "fa-solid fa-heart", title: "Student-First", desc: "Built by students, for students — always free." },
+        { icon: "fa-solid fa-shield-halved", title: "Safe & Trusted", desc: "Verified campus events only." },
+        { icon: "fa-solid fa-bolt", title: "Fast & Simple", desc: "Post an event in under 2 minutes." },
+        { icon: "fa-solid fa-earth-asia", title: "Campus-Wide", desc: "Reach every corner of your campus." },
+      ].map((item, i) => (
+        <div key={i} style={{ background: "#FFF0F7", border: "2px solid #1B1464", borderRadius: 14, padding: "20px 20px" }}>
+          <i className={item.icon} style={{ color: "#FF69B4", fontSize: 22, marginBottom: 10, display: "block" }} />
+          <div style={{ fontFamily: "'Boogaloo', cursive", fontSize: 18, color: "#1B1464", marginBottom: 4 }}>{item.title}</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "#1B1464", opacity: 0.75 }}>{item.desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <p style={{ fontSize: 13, fontWeight: 600, color: "#1B1464", lineHeight: 1.8, opacity: 0.8 }}>
+      We're a small, passionate team working every day to make campus connections easier, louder, and more meaningful. Whether you're posting your first hackathon or scouting for a dance partner — we've got you.
+    </p>
+  </div>
+);
+
+// ═══════════════════════════════════════════════════
+//   CONTACTS CONTENT
+// ═══════════════════════════════════════════════════
+const ContactsContent: React.FC = () => {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [sent, setSent] = useState(false);
+
+  return (
+    <div>
+      <h2 style={{ fontFamily: "'Boogaloo', cursive", fontSize: 44, color: "#FF69B4", letterSpacing: 1, marginBottom: 8 }}>
+        Contact Us
+      </h2>
+      <p style={{ fontSize: 14, fontWeight: 600, color: "#1B1464", lineHeight: 1.8, marginBottom: 28, opacity: 0.85 }}>
+        Got questions, feedback, or just want to say hi? We'd love to hear from you. Drop us a message below.
+      </p>
+
+      <div style={{ display: "flex", gap: 12, marginBottom: 28, flexWrap: "wrap" }}>
+        {[
+          { icon: "fa-solid fa-envelope", label: "hello@campuscrew.in" },
+          { icon: "fa-brands fa-instagram", label: "@campuscrew" },
+          { icon: "fa-brands fa-telegram", label: "t.me/campuscrew" },
+        ].map((c, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, background: "#FFF0F7", border: "2px solid #1B1464", borderRadius: 99, padding: "8px 18px", fontSize: 12, fontWeight: 700, color: "#1B1464" }}>
+            <i className={c.icon} style={{ color: "#FF69B4" }} />
+            {c.label}
+          </div>
+        ))}
+      </div>
+
+      {sent ? (
+        <div style={{ textAlign: "center", padding: "32px 0" }}>
+          <i className="fa-solid fa-circle-check" style={{ fontSize: 52, color: "#FF69B4", marginBottom: 14, display: "block" }} />
+          <h3 style={{ fontFamily: "'Boogaloo', cursive", fontSize: 30, color: "#FF69B4", marginBottom: 8 }}>Message Sent!</h3>
+          <p style={{ color: "#1B1464", fontWeight: 600, fontSize: 14 }}>We'll get back to you at {form.email} shortly.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {([["name", "Your Name", "text"], ["email", "Your Email", "email"]] as [string, string, string][]).map(([key, ph, type]) => (
+            <input
+              key={key}
+              type={type}
+              placeholder={ph}
+              value={form[key as keyof typeof form]}
+              onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+              style={{ width: "100%", padding: "12px 20px", border: "2px solid #FF69B4", borderRadius: 99, background: "transparent", fontFamily: "'Nunito',sans-serif", fontSize: 14, fontWeight: 600, color: "#1B1464", outline: "none", boxSizing: "border-box" }}
+              onFocus={e => (e.target.style.borderColor = "#1B1464")}
+              onBlur={e => (e.target.style.borderColor = "#FF69B4")}
+            />
+          ))}
+          <textarea
+            placeholder="Your message..."
+            value={form.message}
+            onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+            rows={4}
+            style={{ width: "100%", padding: "14px 20px", border: "2px solid #FF69B4", borderRadius: 18, background: "transparent", fontFamily: "'Nunito',sans-serif", fontSize: 14, fontWeight: 600, color: "#1B1464", outline: "none", resize: "vertical", boxSizing: "border-box" }}
+            onFocus={e => (e.target.style.borderColor = "#1B1464")}
+            onBlur={e => (e.target.style.borderColor = "#FF69B4")}
+          />
+          <button
+            onClick={() => { if (form.name && form.email && form.message) setSent(true); }}
+            style={{ padding: "14px", background: "#FF69B4", border: "2.5px solid #1B1464", borderRadius: 99, fontWeight: 900, fontSize: 14, textTransform: "uppercase", letterSpacing: 1, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}
+            onMouseEnter={e => (e.currentTarget.style.background = "#1B1464")}
+            onMouseLeave={e => (e.currentTarget.style.background = "#FF69B4")}
+          >
+            <i className="fa-solid fa-paper-plane" />Send Message
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════
+//   FAQ CONTENT
+// ═══════════════════════════════════════════════════
+const FAQContent: React.FC = () => {
+  const [open, setOpen] = useState<number | null>(0);
+
+  const faqs = [
+    {
+      q: "Is CampusCrew free to use?",
+      a: "Yes! CampusCrew is completely free for all students. You can post events, explore opportunities, and connect with teammates at zero cost — always.",
+    },
+    {
+      q: "Who can post events?",
+      a: "Any student, club, or campus organization can post events. Whether it's a hackathon, cultural fest, sports trial, or study group — if it's campus-related, it belongs here.",
+    },
+    {
+      q: "How do I get started?",
+      a: "Simply click 'Post an Event', fill in your event details, and hit submit. Your event will be visible to the entire campus community within minutes.",
+    },
+    {
+      q: "Can I filter events by category?",
+      a: "Absolutely! Head to the Explore page and use our filters to browse events by category, date, keyword, or popularity.",
+    },
+    {
+      q: "How do I connect with a team?",
+      a: "Each event listing has contact info or a direct connect button. You can reach out to organizers or teammates directly through the platform.",
+    },
+    {
+      q: "Is my information safe?",
+      a: "We take privacy seriously. Your personal information is never sold or shared. Only your name and contact details you choose to display publicly are visible to other students.",
+    },
+    {
+      q: "Can I edit or delete my event after posting?",
+      a: "Yes, you can edit or remove your event at any time from your dashboard after logging in.",
+    },
+  ];
+
+  return (
+    <div>
+      <h2 style={{ fontFamily: "'Boogaloo', cursive", fontSize: 44, color: "#FF69B4", letterSpacing: 1, marginBottom: 8 }}>
+        FAQ
+      </h2>
+      <p style={{ fontSize: 14, fontWeight: 600, color: "#1B1464", lineHeight: 1.8, marginBottom: 28, opacity: 0.85 }}>
+        Got questions? We've answered the most common ones below.
+      </p>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {faqs.map((faq, i) => (
+          <div
+            key={i}
+            style={{
+              border: "2px solid #1B1464", borderRadius: 14, overflow: "hidden",
+              background: open === i ? "#FFF0F7" : "#fff", transition: "background 0.2s",
+            }}
+          >
+            <button
+              onClick={() => setOpen(open === i ? null : i)}
+              style={{
+                width: "100%", background: "none", border: "none", padding: "16px 20px",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                cursor: "pointer", fontFamily: "'Nunito', sans-serif", fontSize: 14,
+                fontWeight: 800, color: "#1B1464", textAlign: "left", gap: 12,
+              }}
+            >
+              <span>{faq.q}</span>
+              <i
+                className={open === i ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"}
+                style={{ color: "#FF69B4", fontSize: 13, flexShrink: 0 }}
+              />
+            </button>
+            {open === i && (
+              <div style={{ padding: "0 20px 16px", fontSize: 13, fontWeight: 600, color: "#1B1464", lineHeight: 1.75, opacity: 0.85 }}>
+                {faq.a}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════
 //   HOMEPAGE
 // ═══════════════════════════════════════════════════
 const HomePage: React.FC<HomePageProps> = ({ onNav }) => {
   const [form, setForm] = useState({ name: "", phone: "", email: "" });
   const [sent, setSent] = useState(false);
   const [btnHov, setBtnHov] = useState(false);
+  const [modal, setModal] = useState<"about" | "contacts" | "faq" | null>(null);
 
   const stats = [
     { num: "700+", label: "Students",  desc: "actively finding their campus crew", icon: "fa-solid fa-user-group" },
@@ -34,15 +262,20 @@ const HomePage: React.FC<HomePageProps> = ({ onNav }) => {
     <div style={{ fontFamily: "'Nunito',sans-serif", background: C.white, color: C.navy }}>
       <GlobalStyles />
 
+      {/* ── MODALS ── */}
+      {modal === "about" && <Modal onClose={() => setModal(null)}><AboutContent /></Modal>}
+      {modal === "contacts" && <Modal onClose={() => setModal(null)}><ContactsContent /></Modal>}
+      {modal === "faq" && <Modal onClose={() => setModal(null)}><FAQContent /></Modal>}
+
       {/* ── NAV ── */}
       <Nav
         onNav={onNav}
         center={
           <>
             <NavLink onClick={() => onNav("explore")}>Explore</NavLink>
-            <NavLink>About Us</NavLink>
-            <NavLink>Contacts</NavLink>
-            <NavLink>FAQ</NavLink>
+            <NavLink onClick={() => setModal("about")}>About Us</NavLink>
+            <NavLink onClick={() => setModal("contacts")}>Contacts</NavLink>
+            <NavLink onClick={() => setModal("faq")}>FAQ</NavLink>
           </>
         }
         right={
@@ -205,10 +438,17 @@ const HomePage: React.FC<HomePageProps> = ({ onNav }) => {
           <span style={{ fontWeight:800, fontSize:15, color:C.navy }}>CampusCrew</span>
         </div>
         <div style={{ display:"flex", gap:28 }}>
-          {["About","Explore","Contact","FAQ"].map(l => {
+          {(["About","Explore","Contact","FAQ"] as const).map(l => {
             const [h, setH] = useState(false);
+            const handleClick = () => {
+              if (l === "About") setModal("about");
+              else if (l === "Contact") setModal("contacts");
+              else if (l === "FAQ") setModal("faq");
+              else onNav("explore");
+            };
             return (
               <button key={l} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+                onClick={handleClick}
                 style={{ background:"none", border:"none", fontWeight:700, fontSize:12, textTransform:"uppercase", letterSpacing:0.5, color:h?C.pink:C.navy, cursor:"pointer", transition:"color 0.18s", fontFamily:"'Nunito',sans-serif" }}>
                 {l}
               </button>
