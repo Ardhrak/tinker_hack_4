@@ -1,23 +1,20 @@
 import { useState, useMemo } from "react";
 import { C, CATEGORIES, type Event, type Page } from "./tokens.ts";
-import { GlobalStyles, Nav, NavLink, PinkBtn } from "./components.tsx";
-import EventCard from "./Eventcard";
+import { GlobalStyles, Nav, NavLink, PinkBtn } from "./components";
+import EventCard from "./Eventcard.tsx";
 
 // ═══════════════════════════════════════════════════
 //   TYPES
 // ═══════════════════════════════════════════════════
-
- interface ExplorePageProps {
+interface ExplorePageProps {
   onNav: (target: Page, id?: string) => void;
   events: Event[];
-  loading: boolean;   // add this
 }
-
 
 // ═══════════════════════════════════════════════════
 //   EXPLORE PAGE
 // ═══════════════════════════════════════════════════
-const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events, loading }) => {
+const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events }) => {
   const [search, setSearch] = useState("");
   const [cat, setCat]       = useState("All");
   const [sub, setSub]       = useState("All");
@@ -35,7 +32,7 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events, loading }) => 
   );
 
   return (
-    <div style={{ minHeight:"100vh",width: "100%", background:C.white, fontFamily:"'Nunito',sans-serif" }}>
+    <div style={{ minHeight:"100vh", background:C.white, fontFamily:"'Nunito',sans-serif" }}>
       <GlobalStyles />
       <Nav
         onNav={onNav}
@@ -119,12 +116,7 @@ const ExplorePage: React.FC<ExplorePageProps> = ({ onNav, events, loading }) => 
         </p>
 
         {/* Grid or empty state */}
-        {loading ? (
-          <div style={{ textAlign:"center", padding:"80px 24px" }}>
-            <i className="fa-solid fa-spinner" style={{ fontSize:40, color:C.pink, display:"block", marginBottom:16, animation:"pulse 1s infinite" }}/>
-            <p style={{ color:C.navy, fontWeight:700, opacity:0.5 }}>Loading events...</p>
-          </div>
-        ) : filtered.length > 0 ? (
+        {filtered.length > 0 ? (
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))", gap:20 }}>
             {filtered.map(ev => (
               <EventCard key={ev.id} ev={ev} onClick={() => onNav("details", ev.id)}/>
